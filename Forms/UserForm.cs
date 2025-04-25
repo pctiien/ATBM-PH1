@@ -17,30 +17,38 @@ namespace ATBM_HTTT_PH1
             await LoadUserListAsync();
         }
 
-         private async Task LoadUserListAsync()
-    {
-        try
+        private async Task LoadUserListAsync()
         {
-            List<string> users = await userService.getUsers();
-
-            listView1.Items.Clear();
-
-            foreach (var user in users)
+            try
             {
-                var item = new ListViewItem(user);
-                listView1.Items.Add(item);
+                // Lấy danh sách người dùng (có 3 cột: Username, Account Status, Created Date)
+                List<string[]> users = await userService.getUsers();
+
+                listView1.Items.Clear();
+
+                foreach (var user in users)
+                {
+                    // Kiểm tra chắc chắn có đủ 3 trường
+                    if (user.Length >= 3)
+                    {
+                        // Tạo một item cho mỗi người dùng
+                        var item = new ListViewItem(user[0]); // Username
+                        item.SubItems.Add(user[1]); // Account Status
+                        item.SubItems.Add(user[2]); // Created Date
+                        listView1.Items.Add(item);
+                    }
+                }
+
+                if (users.Count == 0)
+                {
+                    MessageBox.Show("Không có người dùng nào được tìm thấy.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
-
-            if (users.Count == 0)
+            catch (Exception ex)
             {
-                MessageBox.Show("Không có người dùng nào được tìm thấy.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Lỗi khi tải danh sách người dùng:\n{ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Lỗi khi tải danh sách người dùng:\n{ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-    }
 
         private async void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -70,7 +78,6 @@ namespace ATBM_HTTT_PH1
             }
         }
 
-      
         private async void BtnRefresh_Click(object sender, EventArgs e)
         {
             await LoadUserListAsync();

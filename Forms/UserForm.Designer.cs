@@ -19,6 +19,8 @@
         {
             this.listView1 = new ListView();
             this.columnHeader1 = new ColumnHeader();
+            this.columnHeader2 = new ColumnHeader();
+            this.columnHeader3 = new ColumnHeader();
             this.label1 = new Label();
             this.btnRefresh = new Button();
             this.groupBox1 = new GroupBox();
@@ -28,9 +30,13 @@
             // listView1 (Danh sách người dùng)
             // 
             this.columnHeader1.Text = "Username";
-            this.columnHeader1.Width = 460;
+            this.columnHeader1.Width = 160;
+            this.columnHeader2.Text = "Account Status";
+            this.columnHeader2.Width = 150;
+            this.columnHeader3.Text = "Created Date";
+            this.columnHeader3.Width = 170;
 
-            this.listView1.Columns.AddRange(new ColumnHeader[] { this.columnHeader1 });
+            this.listView1.Columns.AddRange(new ColumnHeader[] { this.columnHeader1, this.columnHeader2, this.columnHeader3 });
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Location = new Point(20, 60);
@@ -95,16 +101,15 @@
             this.Load += MainForm_Load;
         }
 
-
         #endregion
 
         private ListView listView1;
         private ColumnHeader columnHeader1;
+        private ColumnHeader columnHeader2;
+        private ColumnHeader columnHeader3;
         private Label label1;
         private Button btnRefresh;
         private GroupBox groupBox1;
         private ListView listViewPermissions;
-
-
     }
 }
