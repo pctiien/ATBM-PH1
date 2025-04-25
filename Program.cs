@@ -20,7 +20,11 @@ namespace ATBM_HTTT_PH1
             var services = new ServiceCollection();
            
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRoleService, RoleService>();
+
             services.AddTransient<UserForm>();
+            services.AddTransient<RoleForm>();
+            services.AddTransient<MainForm>();
 
             var serviceProvider = services.BuildServiceProvider();
 

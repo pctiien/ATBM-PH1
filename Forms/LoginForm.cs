@@ -49,12 +49,12 @@ namespace ATBM_HTTT_PH1.Forms
                 MessageBox.Show("Login successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 var serviceProvider = services.BuildServiceProvider();
-                var userForm = serviceProvider.GetRequiredService<UserForm>();
+                var mainForm = serviceProvider.GetRequiredService<MainForm>();
 
                 Hide();
 
-                userForm.FormClosed += (s, args) => Close();
-                userForm.Show();
+                mainForm.FormClosed += (s, args) => Close();
+                mainForm.Show();
             }
             catch (Exception ex)
             {

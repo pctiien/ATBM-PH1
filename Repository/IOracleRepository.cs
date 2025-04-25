@@ -10,8 +10,8 @@ namespace ATBM_HTTT_PH1.Repository
     {
 
         Task<List<string>> getPermissionByUser(string userName);
-        Task<List<string>> getPermissionByRole(string roleName);
-
-        Task<List<string>> getUsers();
+        Task<List<string[]>> getPermissionByRole(string roleName);
+        Task<List<string>> getRoles();
+        Task<List<string[]>> getUsers();
     }
 }

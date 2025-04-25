@@ -19,7 +19,12 @@ namespace ATBM_HTTT_PH1.Service
             return await oracleRepository.getPermissionByUser(userName);
         }
 
-        public async Task<List<string>> getUsers()
+        public Task<List<string>> getRolesByUser(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<string[]>> getUsers()
         {
             return await oracleRepository.getUsers();
         }
