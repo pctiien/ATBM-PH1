@@ -93,10 +93,34 @@ namespace ATBM_HTTT_PH1.Repository
 
                     using (var reader = await command.ExecuteReaderAsync())
                     {
+<<<<<<< HEAD
                         while (await reader.ReadAsync())
                         {
                             permissions.Add(new UserPermission(userName, reader.GetString(0), reader.GetString(1)));
                         }
+=======
+                        command.CommandType = System.Data.CommandType.Text;
+                        command.CommandText = "SELECT DISTINCT TABLE_NAME, PRIVILEGE, OWNER, GRANTOR FROM DBA_TAB_PRIVS WHERE GRANTEE = :userName";
+                        command.Parameters.Add(new OracleParameter("userName", userName));
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (reader.Read())
+                            {
+#pragma warning disable CS8604 // Possible null reference argument.
+                            var permission = new UserPermission(
+                                    userName: userName,
+                                    tableName: reader["TABLE_NAME"].ToString(),
+                                    privilege: reader["PRIVILEGE"].ToString(),
+                                    owner: reader["OWNER"].ToString(),
+                                    grantor: reader["GRANTOR"].ToString()
+                                );
+#pragma warning restore CS8604 // Possible null reference argument.
+                            permissions.Add(permission);
+                            }
+                    }
+
+>>>>>>> main
                     }
 
                 }
@@ -206,7 +230,7 @@ namespace ATBM_HTTT_PH1.Repository
                 using (var command = oracleConnection.CreateCommand())
                 {
                     command.CommandType = System.Data.CommandType.Text;
-                    command.CommandText = $"REVOKE {userPermission.Privilege} ON qltv.{userPermission.TableName} FROM {userPermission.UserName}";
+                    command.CommandText = $"REVOKE {userPermission.Privilege} ON {userPermission.TableName} FROM {userPermission.UserName}";
                     await command.ExecuteNonQueryAsync();
                 }
             }

@@ -20,11 +20,16 @@ namespace ATBM_HTTT_PH1.Repository
         Task<bool> CreateUser(string username, string password, bool isDBA = false);
         Task<bool> DropUser(string username, bool cascade = false);
         Task<bool> AlterUser(string username, string newPassword = null, bool? locked = null);
+<<<<<<< HEAD
 
         Task GrantPrivilege(string grantee, string privilege, string objectName, string objectType);
         Task<List<string>> GetObjectNamesByType(string objectType); // Lấy tên đối tượng theo loại
         Task<List<string>> GetUsersAndRoles(); // Lấy danh sách user/role
 
+=======
+    
+  
+>>>>>>> main
         Task<bool> CreateRole(string roleName, string password = null);
         Task<bool> DropRole(string roleName);
         Task<bool> AlterRole(string roleName, string newPassword = null);
@@ -37,7 +42,11 @@ namespace ATBM_HTTT_PH1.Repository
         Task<bool> RevokePrivilegeFromRole(string privilege, string objectName, string roleName);
         Task<bool> RevokeRoleFromUser(string roleName, string username);
     
+<<<<<<< HEAD
     // New method for custom SQL execution
+=======
+        // New method for custom SQL execution
+>>>>>>> main
         Task<List<string[]>> ExecuteQuery(string sql, Dictionary<string, object> parameters = null);
     }
 }

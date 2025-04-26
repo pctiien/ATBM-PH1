@@ -58,6 +58,8 @@ namespace ATBM_HTTT_PH1
                 {
                     var item = new ListViewItem(permission.TableName);
                     item.SubItems.Add(permission.Privilege);
+                    item.SubItems.Add(permission.Owner);
+                    item.SubItems.Add(permission.Grantor);
                     listViewPermissions.Items.Add(item);
                 }
 
@@ -68,6 +70,7 @@ namespace ATBM_HTTT_PH1
                 MessageBox.Show($"Lỗi khi tải quyền người dùng:\n{ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private async void listViewUsers_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -85,24 +88,31 @@ namespace ATBM_HTTT_PH1
             lblSelectedUser.Text = "";
         }
 
+    
         private async void BtnRevokePermission_Click(object sender, EventArgs e)
         {
             if (listViewUsers.SelectedItems.Count == 0 || listViewPermissions.SelectedItems.Count == 0)
                 return;
 
             string userName = listViewUsers.SelectedItems[0].Text;
-            string tableName = listViewPermissions.SelectedItems[0].Text;
-            string privilege = listViewPermissions.SelectedItems[0].SubItems[1].Text;
 
-            var confirm = MessageBox.Show($"Xác nhận thu hồi quyền {privilege} trên bảng {tableName} của người dùng {userName}?",
+            // Lấy các thông tin từ listViewPermissions
+            var selectedItem = listViewPermissions.SelectedItems[0];
+            string tableName = selectedItem.SubItems[0].Text;
+            string privilege = selectedItem.SubItems[1].Text;
+            string owner = selectedItem.SubItems[2].Text;
+
+            var confirm = MessageBox.Show(
+                $"Xác nhận thu hồi quyền {privilege} trên bảng {tableName} của người dùng {userName}?",
                 "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (confirm == DialogResult.Yes)
             {
-                var permission = new UserPermission(tableName, userName, privilege);
+                var permission = new UserPermission(userName,tableName, privilege, owner, null); // Grantor không cần khi revoke
                 await userService.revokePermissionForUser(permission);
                 await LoadUserPermissionsAsync(userName);
             }
         }
+
     }
 }
