@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ATBM_HTTT_PH1.Service;
 
@@ -15,28 +8,27 @@ namespace ATBM_HTTT_PH1.Forms
     {
         private readonly RoleForm roleForm;
         private readonly UserForm userForm;
+        private readonly ObjectForm objectForm;
 
-        public MainForm(RoleForm roleForm, UserForm userForm)
+        public MainForm(RoleForm roleForm, UserForm userForm, ObjectForm objectForm)
         {
             this.roleForm = roleForm;
             this.userForm = userForm;
+            this.objectForm = objectForm;
             InitializeComponent();
 
-            // Initialize RoleForm and embed it in the Roles tab
-            roleForm.TopLevel = false;
-            roleForm.FormBorderStyle = FormBorderStyle.None;
-            roleForm.Dock = DockStyle.Fill; 
+            LoadFormToTab(roleForm, tabRoles);
+            LoadFormToTab(userForm, tabUsers);
+            LoadFormToTab(objectForm, tabObjects);
+        }
 
-            tabRoles.Controls.Add(roleForm);
-            roleForm.Show();
-
-            // Initialize UserForm and embed it in the Users tab
-            userForm.TopLevel = false;
-            userForm.FormBorderStyle = FormBorderStyle.None;
-            userForm.Dock = DockStyle.Fill;
-
-            tabUsers.Controls.Add(userForm);
-            userForm.Show();
+        private void LoadFormToTab(Form form, TabPage tabPage)
+        {
+            form.TopLevel = false;
+            form.FormBorderStyle = FormBorderStyle.None;
+            form.Dock = DockStyle.Fill;
+            tabPage.Controls.Add(form);
+            form.Show();
         }
     }
 }

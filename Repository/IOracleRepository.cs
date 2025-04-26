@@ -16,7 +16,9 @@ namespace ATBM_HTTT_PH1.Repository
         Task<List<string[]>> getUsers();
 
         Task revokePermissionForUser(UserPermission userPermission);
-        
+        Task<List<string[]>> getPermissionByObject(string objectName, string objectType);
+        Task<List<string[]>> getObjectByType(string objectType);
+
         Task<bool> CreateUser(string username, string password, bool isDBA = false);
         Task<bool> DropUser(string username, bool cascade = false);
         Task<bool> AlterUser(string username, string newPassword = null, bool? locked = null);
