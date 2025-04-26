@@ -61,5 +61,10 @@ namespace ATBM_HTTT_PH1.Forms
                 }
             }
         }
+
+        private void dataGridViewPermissions_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
