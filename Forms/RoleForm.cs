@@ -33,9 +33,6 @@ namespace ATBM_HTTT_PH1.Forms
             {
                 listViewRoles.Items.Add(new ListViewItem(role));
             }
-
-            comboBoxRoles.Items.Clear();
-            comboBoxRoles.Items.AddRange(roles.ToArray());
         }
 
         private async void BtnLoadPermissions_Click(object sender, EventArgs e)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ATBM_HTTT_PH1.Model;
 using ATBM_HTTT_PH1.Repository;
 
 namespace ATBM_HTTT_PH1.Service
@@ -14,7 +15,7 @@ namespace ATBM_HTTT_PH1.Service
         {
             oracleRepository = _oracleRepository;
         }
-        public async Task<List<string>> getPermissionsByUser(string userName)
+        public async Task<List<UserPermission>> getPermissionsByUser(string userName)
         {
             return await oracleRepository.getPermissionByUser(userName);
         }
@@ -28,5 +29,12 @@ namespace ATBM_HTTT_PH1.Service
         {
             return await oracleRepository.getUsers();
         }
+
+        public async Task revokePermissionForUser(UserPermission userPermission)
+        {
+            await oracleRepository.revokePermissionForUser(userPermission);
+        }
+
+     
     }
 }

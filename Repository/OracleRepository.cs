@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ATBM_HTTT_PH1.Model;
 using ATBM_HTTT_PH1.Util;
 using Microsoft.VisualBasic.ApplicationServices;
 using Oracle.ManagedDataAccess.Client;
@@ -54,7 +55,7 @@ namespace ATBM_HTTT_PH1.Repository
                     using (var command = oracleConnection.CreateCommand())
                     {
                         command.CommandType = System.Data.CommandType.Text;
-                        command.CommandText = "SELECT TABLE_NAME,COLUMN_NAME, PRIVILEGE FROM ROLE_TAB_PRIVS WHERE ROLE = :roleName";
+                        command.CommandText = "SELECT DISTINCT TABLE_NAME,COLUMN_NAME, PRIVILEGE FROM ROLE_TAB_PRIVS WHERE ROLE = :roleName";
                         command.Parameters.Add(new OracleParameter("roleName", roleName));
 
                         using(var reader = await command.ExecuteReaderAsync())
@@ -78,22 +79,22 @@ namespace ATBM_HTTT_PH1.Repository
 
         }
 
-        public async Task<List<string>> getPermissionByUser(string userName)
+        public async Task<List<UserPermission>> getPermissionByUser(string userName)
         {
-            var permissions = new List<string>();
+            var permissions = new List<UserPermission>();
             try
             {
                     using (var command = oracleConnection.CreateCommand())
                     {
                         command.CommandType = System.Data.CommandType.Text;
-                        command.CommandText = "SELECT TABLE_NAME, PRIVILEGE FROM DBA_TAB_PRIVS WHERE GRANTOR = :userName";
+                        command.CommandText = "SELECT DISTINCT TABLE_NAME, PRIVILEGE FROM DBA_TAB_PRIVS WHERE GRANTEE = :userName";
                         command.Parameters.Add(new OracleParameter("userName", userName));
 
                         using (var reader = await command.ExecuteReaderAsync())
                         {
                             while (await reader.ReadAsync())
                             {
-                                permissions.Add(String.Format("{0} ON {1}", reader.GetString(1), reader.GetString(0)));
+                                permissions.Add(new UserPermission(userName, reader.GetString(0), reader.GetString(1)));
                             }
                         }
 
@@ -161,6 +162,25 @@ namespace ATBM_HTTT_PH1.Repository
                 throw new InvalidOperationException("Error fetching users", ex);
             }
             return users;
+        }
+
+        public async Task revokePermissionForUser(UserPermission userPermission)
+        {
+            var users = new List<string[]>();
+            try
+            {
+                using (var command = oracleConnection.CreateCommand())
+                {
+                    command.CommandType = System.Data.CommandType.Text;
+                    command.CommandText = $"REVOKE {userPermission.Privilege} ON qltv.{userPermission.TableName} FROM {userPermission.UserName}";
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new InvalidOperationException("Error revoking privilege for users", ex);
+            }
         }
          public async Task<List<string[]>> ExecuteQuery(string sql, Dictionary<string, object> parameters = null)
     {

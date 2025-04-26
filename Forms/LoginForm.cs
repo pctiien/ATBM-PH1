@@ -6,6 +6,7 @@ using ATBM_HTTT_PH1.Repository;
 using ATBM_HTTT_PH1.Service;
 using ATBM_HTTT_PH1.Util;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualBasic.ApplicationServices;
 using Oracle.ManagedDataAccess.Client;
 
 namespace ATBM_HTTT_PH1.Forms
@@ -36,7 +37,7 @@ namespace ATBM_HTTT_PH1.Forms
                     connectionString += "DBA Privilege = SYSDBA;";
 
                 var factory = new OracleConnectionFactory(connectionString);
-                factory.createConnection();
+                var connection = factory.createConnection();
 
                 services.AddSingleton(new OracleConnectionFactory(connectionString));
                 services.AddScoped(provider =>

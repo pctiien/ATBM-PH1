@@ -1,4 +1,5 @@
-﻿using ATBM_HTTT_PH1.Service;
+﻿using ATBM_HTTT_PH1.Model;
+using ATBM_HTTT_PH1.Service;
 
 namespace ATBM_HTTT_PH1
 {
@@ -8,11 +9,11 @@ namespace ATBM_HTTT_PH1
 
         public UserForm(IUserService _userService)
         {
-            this.userService = _userService;
+            userService = _userService;
             InitializeComponent();
         }
 
-        private async void MainForm_Load(object sender, EventArgs e)
+        private async void UserForm_Load(object sender, EventArgs e)
         {
             await LoadUserListAsync();
         }
@@ -21,21 +22,17 @@ namespace ATBM_HTTT_PH1
         {
             try
             {
-                // Lấy danh sách người dùng (có 3 cột: Username, Account Status, Created Date)
-                List<string[]> users = await userService.getUsers();
-
-                listView1.Items.Clear();
+                var users = await userService.getUsers();
+                listViewUsers.Items.Clear();
 
                 foreach (var user in users)
                 {
-                    // Kiểm tra chắc chắn có đủ 3 trường
                     if (user.Length >= 3)
                     {
-                        // Tạo một item cho mỗi người dùng
-                        var item = new ListViewItem(user[0]); // Username
-                        item.SubItems.Add(user[1]); // Account Status
-                        item.SubItems.Add(user[2]); // Created Date
-                        listView1.Items.Add(item);
+                        var item = new ListViewItem(user[0]);
+                        item.SubItems.Add(user[1]);
+                        item.SubItems.Add(user[2]);
+                        listViewUsers.Items.Add(item);
                     }
                 }
 
@@ -50,27 +47,21 @@ namespace ATBM_HTTT_PH1
             }
         }
 
-        private async void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        private async Task LoadUserPermissionsAsync(string userName)
         {
-            if (listView1.SelectedItems.Count == 0)
-                return;
-
-            // Lấy tên người dùng được chọn từ ListView
-            var selectedUser = listView1.SelectedItems[0].Text;
-
-            // Truy vấn các quyền của người dùng
             try
             {
-                var permissions = await userService.getPermissionsByUser(selectedUser);
-
-                // Hiển thị quyền vào ListView hoặc Label (tùy theo yêu cầu)
-                listViewPermissions.Items.Clear(); // Xóa danh sách cũ
+                var permissions = await userService.getPermissionsByUser(userName);
+                listViewPermissions.Items.Clear();
 
                 foreach (var permission in permissions)
                 {
-                    var item = new ListViewItem(permission);
+                    var item = new ListViewItem(permission.TableName);
+                    item.SubItems.Add(permission.Privilege);
                     listViewPermissions.Items.Add(item);
                 }
+
+                lblSelectedUser.Text = $"Quyền của người dùng: {userName}";
             }
             catch (Exception ex)
             {
@@ -78,9 +69,40 @@ namespace ATBM_HTTT_PH1
             }
         }
 
+        private async void listViewUsers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listViewUsers.SelectedItems.Count == 0)
+                return;
+
+            var selectedUser = listViewUsers.SelectedItems[0].Text;
+            await LoadUserPermissionsAsync(selectedUser);
+        }
+
         private async void BtnRefresh_Click(object sender, EventArgs e)
         {
             await LoadUserListAsync();
+            listViewPermissions.Items.Clear();
+            lblSelectedUser.Text = "";
+        }
+
+        private async void BtnRevokePermission_Click(object sender, EventArgs e)
+        {
+            if (listViewUsers.SelectedItems.Count == 0 || listViewPermissions.SelectedItems.Count == 0)
+                return;
+
+            string userName = listViewUsers.SelectedItems[0].Text;
+            string tableName = listViewPermissions.SelectedItems[0].Text;
+            string privilege = listViewPermissions.SelectedItems[0].SubItems[1].Text;
+
+            var confirm = MessageBox.Show($"Xác nhận thu hồi quyền {privilege} trên bảng {tableName} của người dùng {userName}?",
+                "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (confirm == DialogResult.Yes)
+            {
+                var permission = new UserPermission(tableName, userName, privilege);
+                await userService.revokePermissionForUser(permission);
+                await LoadUserPermissionsAsync(userName);
+            }
         }
     }
 }
