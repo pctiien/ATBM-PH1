@@ -354,9 +354,73 @@ namespace ATBM_HTTT_PH1.Repository
             return await ExecuteNonQuery(sql);
         }
 
-        public Task<List<string[]>> getPermissionByObject(string objectName, string objectType)
+        public async Task<List<string[]>> getPermissionByObject(string objectName)
         {
-            throw new NotImplementedException();
+            var permissions = new List<string[]>();
+            try
+            {
+                using (var command = oracleConnection.CreateCommand())
+                {
+                    command.CommandType = System.Data.CommandType.Text;
+                    command.CommandText = @"SELECT 
+                                                tab.GRANTEE AS GRANTEE,
+                                                tab.OWNER,
+                                                tab.TABLE_NAME,
+                                                tab.GRANTOR,
+                                                tab.PRIVILEGE,
+                                                'DIRECT' AS PRIV_TYPE
+                                            FROM 
+                                                dba_tab_privs tab
+                                            WHERE 
+                                                tab.TABLE_NAME = :objectName1
+                                                AND tab.PRIVILEGE != 'INHERIT PRIVILEGES'
+
+                                            UNION ALL
+
+                                            SELECT 
+                                                role.GRANTEE AS GRANTEE,
+                                                tab.OWNER,
+                                                tab.TABLE_NAME,
+                                                tab.GRANTOR,
+                                                tab.PRIVILEGE,
+                                                'INHERITED' AS PRIV_TYPE
+                                            FROM 
+                                                dba_tab_privs tab
+                                            JOIN 
+                                                dba_role_privs role 
+                                                ON tab.GRANTEE = role.GRANTED_ROLE
+                                            WHERE 
+                                                tab.TABLE_NAME = :objectName2
+                                                AND tab.PRIVILEGE != 'INHERIT PRIVILEGES'";
+                    command.Parameters.Add(new OracleParameter("objectName1", objectName));
+                    command.Parameters.Add(new OracleParameter("objectName2", objectName));
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+                            string grantee = reader["GRANTEE"].ToString();
+                            string owner = reader["OWNER"].ToString();
+                            string object_name = reader["TABLE_NAME"].ToString();
+                            string grantor = reader["GRANTOR"].ToString();
+                            string privilege = reader["PRIVILEGE"].ToString();
+                            string privilegeType = reader["PRIV_TYPE"].ToString();
+
+                            permissions.Add([grantee, owner, object_name, grantor, privilege, privilegeType]);
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+
+
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Error fetching permission for objects", ex);
+            }
+            return permissions;
         }
 
         public async Task<List<string[]>> getObjectByType(string objectType)

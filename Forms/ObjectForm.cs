@@ -18,7 +18,7 @@ namespace ATBM_HTTT_PH1.Forms
         private async void comboBoxObjectType_SelectedIndexChanged(object sender, EventArgs e)
         {
             string? selectedType = comboBoxObjectType.SelectedItem?.ToString();
-            if (selectedType!=null)
+            if (selectedType != null)
             {
                 var data = await objectService.getObjectByType(selectedType);
 
@@ -30,8 +30,36 @@ namespace ATBM_HTTT_PH1.Forms
                         CreatedDate = row[2]
                     })
                     .ToList();
+
+                // Xoá bảng permissions cũ nếu có
+                dataGridViewPermissions.DataSource = null;
             }
-            
+        }
+
+        private async void dataGridViewObjects_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                var row = dataGridViewObjects.Rows[e.RowIndex];
+                string objectName = row.Cells["ObjectName"].Value?.ToString() ?? "";
+
+                if (!string.IsNullOrEmpty(objectName))
+                {
+                    var permissionData = await objectService.getPermissionByObject(objectName);
+
+                    var result = permissionData.Select(p => new
+                    {
+                        Grantee = p[0],
+                        Owner = p[1],
+                        ObjectName = p[2],
+                        Grantor = p[3],
+                        Privilege = p[4],
+                        PrivType = p[5]
+                    }).ToList();
+
+                    dataGridViewPermissions.DataSource = result;
+                }
+            }
         }
     }
 }

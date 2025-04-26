@@ -18,5 +18,10 @@ namespace ATBM_HTTT_PH1.Service
         {
             return await oracleRepository.getObjectByType(objectType);
         }
+
+        public async Task<List<string[]>> getPermissionByObject(string objectName)
+        {
+            return await oracleRepository.getPermissionByObject(objectName);
+        }
     }
 }

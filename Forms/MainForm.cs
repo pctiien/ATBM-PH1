@@ -16,7 +16,7 @@ namespace ATBM_HTTT_PH1.Forms
             this.userForm = userForm;
             this.objectForm = objectForm;
             InitializeComponent();
-
+            this.ClientSize = new System.Drawing.Size(1500, 750);
             LoadFormToTab(roleForm, tabRoles);
             LoadFormToTab(userForm, tabUsers);
             LoadFormToTab(objectForm, tabObjects);

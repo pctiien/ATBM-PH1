@@ -9,5 +9,6 @@ namespace ATBM_HTTT_PH1.Service
     public interface IObjectService
     {
         Task<List<string[]>> getObjectByType(string objectType);
+        Task<List<string[]>> getPermissionByObject(string objectName);
     }
 }
