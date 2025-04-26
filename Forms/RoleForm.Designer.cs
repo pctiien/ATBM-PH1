@@ -9,7 +9,7 @@
         private Label lblRoles;
         private Label lblPermissions;
         private Button btnLoadPermissions;
-        private ComboBox comboBoxRoles;
+        //private ComboBox comboBoxRoles;
 
         protected override void Dispose(bool disposing)
         {
@@ -29,7 +29,7 @@
             this.lblRoles = new Label();
             this.lblPermissions = new Label();
             this.btnLoadPermissions = new Button();
-            this.comboBoxRoles = new ComboBox();
+            //this.comboBoxRoles = new ComboBox();
 
             // 
             // listViewRoles
@@ -69,12 +69,6 @@
             this.btnLoadPermissions.Click += new EventHandler(this.BtnLoadPermissions_Click);
 
             // 
-            // comboBoxRoles
-            // 
-            this.comboBoxRoles.Location = new Point(20, 320);
-            this.comboBoxRoles.Size = new Size(300, 30);
-
-            // 
             // lblRoles
             // 
             this.lblRoles.Text = "Roles:";
@@ -96,7 +90,7 @@
             this.Controls.Add(this.listViewPermissions);
             this.Controls.Add(this.btnLoadRoles);
             this.Controls.Add(this.btnLoadPermissions);
-            this.Controls.Add(this.comboBoxRoles);
+            //this.Controls.Add(this.comboBoxRoles);
             this.Controls.Add(this.lblRoles);
             this.Controls.Add(this.lblPermissions);
             this.Text = "Role Management";
