@@ -15,11 +15,12 @@ namespace ATBM_HTTT_PH1.Forms
     {
         private readonly RoleForm roleForm;
         private readonly UserForm userForm;
-
-        public MainForm(RoleForm roleForm, UserForm userForm)
+        private readonly GrantPermissionForm grantForm;
+        public MainForm(RoleForm roleForm, UserForm userForm, GrantPermissionForm grantForm)
         {
             this.roleForm = roleForm;
             this.userForm = userForm;
+            this.grantForm = grantForm;
             InitializeComponent();
 
             // Initialize RoleForm and embed it in the Roles tab
@@ -37,6 +38,14 @@ namespace ATBM_HTTT_PH1.Forms
 
             tabUsers.Controls.Add(userForm);
             userForm.Show();
+
+            // Initialize UserForm and embed it in the Grants tab
+            grantForm.TopLevel = false;
+            grantForm.FormBorderStyle = FormBorderStyle.None;
+            grantForm.Dock = DockStyle.Fill;
+
+            tabGrants.Controls.Add(grantForm);
+            grantForm.Show();
         }
     }
 }

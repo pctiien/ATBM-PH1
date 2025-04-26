@@ -18,19 +18,30 @@ namespace ATBM_HTTT_PH1
         {
 
             var services = new ServiceCollection();
-           
+
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IOracleRepository, OracleRepository>();
+            services.AddScoped<IPermissionService, PermissionService>();
 
             services.AddTransient<UserForm>();
             services.AddTransient<RoleForm>();
             services.AddTransient<MainForm>();
+            services.AddTransient<GrantPermissionForm>();
+
 
             var serviceProvider = services.BuildServiceProvider();
 
             ApplicationConfiguration.Initialize();
+            var loginForm = new LoginForm(services);
+            Application.Run(loginForm);  // Không gán giá tr? tr? v? vào bi?n
 
-            Application.Run(new LoginForm(services));
+            // Sau khi ðãng nh?p thành công, m? GrantPermissionForm
+            if (loginForm.DialogResult == DialogResult.OK) // Ki?m tra khi ngý?i dùng ðãng nh?p thành công
+            {
+                var grantPermissionForm = serviceProvider.GetService<GrantPermissionForm>();
+                Application.Run(grantPermissionForm);
+            }
         }
 
     }
