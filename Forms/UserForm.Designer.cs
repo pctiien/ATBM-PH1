@@ -50,7 +50,26 @@
             this.columnPermissionPrivilege.Text = "Quyền";
             this.columnPermissionPrivilege.Width = 240;
 
-            this.listViewPermissions.Columns.AddRange(new ColumnHeader[] { columnPermissionTable, columnPermissionPrivilege });
+            this.columnPermissionOwner = new ColumnHeader();
+            this.columnPermissionGrantor = new ColumnHeader();
+
+            this.columnPermissionTable.Text = "Table name";
+            this.columnPermissionTable.Width = 160;
+            this.columnPermissionPrivilege.Text = "Privilege";
+            this.columnPermissionPrivilege.Width = 100;
+            this.columnPermissionOwner.Text = "Owner";
+            this.columnPermissionOwner.Width = 120;
+            this.columnPermissionGrantor.Text = "Grantor";
+            this.columnPermissionGrantor.Width = 120;
+
+            this.listViewPermissions.Columns.AddRange(new ColumnHeader[] {
+                columnPermissionTable,
+                columnPermissionPrivilege,
+                columnPermissionOwner,
+                columnPermissionGrantor
+            });
+
+            //this.listViewPermissions.Columns.AddRange(new ColumnHeader[] { columnPermissionTable, columnPermissionPrivilege });
             this.listViewPermissions.FullRowSelect = true;
             this.listViewPermissions.GridLines = true;
             this.listViewPermissions.Location = new Point(20, 330);
@@ -113,6 +132,8 @@
         private ListView listViewPermissions;
         private ColumnHeader columnPermissionTable;
         private ColumnHeader columnPermissionPrivilege;
+        private ColumnHeader columnPermissionOwner;
+        private ColumnHeader columnPermissionGrantor;
 
         private Label label1;
         private Label lblSelectedUser;
