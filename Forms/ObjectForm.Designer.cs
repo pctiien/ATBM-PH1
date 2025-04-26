@@ -18,82 +18,97 @@
 
         private void InitializeComponent()
         {
-            this.comboBoxObjectType = new System.Windows.Forms.ComboBox();
-            this.labelObjectType = new System.Windows.Forms.Label();
-            this.dataGridViewObjects = new System.Windows.Forms.DataGridView();
-            this.dataGridViewPermissions = new System.Windows.Forms.DataGridView();
-            this.splitContainer = new System.Windows.Forms.SplitContainer();
-
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewObjects)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPermissions)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
-            this.splitContainer.Panel1.SuspendLayout();
-            this.splitContainer.Panel2.SuspendLayout();
-            this.splitContainer.SuspendLayout();
-            this.SuspendLayout();
-
-            // labelObjectType
-            this.labelObjectType.AutoSize = true;
-            this.labelObjectType.Location = new System.Drawing.Point(0, 0);
-            this.labelObjectType.Name = "labelObjectType";
-            this.labelObjectType.Size = new System.Drawing.Size(100, 20);
-            this.labelObjectType.Text = "Object Type:";
-
+            comboBoxObjectType = new ComboBox();
+            labelObjectType = new Label();
+            dataGridViewObjects = new DataGridView();
+            dataGridViewPermissions = new DataGridView();
+            splitContainer = new SplitContainer();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewObjects).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewPermissions).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
+            splitContainer.Panel1.SuspendLayout();
+            splitContainer.Panel2.SuspendLayout();
+            splitContainer.SuspendLayout();
+            SuspendLayout();
+            // 
             // comboBoxObjectType
-            this.comboBoxObjectType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxObjectType.FormattingEnabled = true;
-            this.comboBoxObjectType.Items.AddRange(new object[] { "TABLE", "VIEW", "FUNCTION", "PROCEDURE" });
-            this.comboBoxObjectType.Location = new System.Drawing.Point(100,0);
-            this.comboBoxObjectType.Name = "comboBoxObjectType";
-            this.comboBoxObjectType.Size = new System.Drawing.Size(250, 25); // Điều chỉnh chiều rộng cho phù hợp
-            this.comboBoxObjectType.SelectedIndexChanged += new System.EventHandler(this.comboBoxObjectType_SelectedIndexChanged);
-
-            // splitContainer
-            //this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer.Location = new System.Drawing.Point(0, 25);  // Điều chỉnh vị trí
-            this.splitContainer.Name = "splitContainer";
-            this.splitContainer.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.splitContainer.SplitterDistance = 685;  // Chia đều giữa hai bảng
-            this.splitContainer.Size = new System.Drawing.Size(1370, 390);
-
-            this.splitContainer.Panel1.Controls.Add(this.dataGridViewObjects);
-            this.splitContainer.Panel2.Controls.Add(this.dataGridViewPermissions);
-
+            // 
+            comboBoxObjectType.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxObjectType.FormattingEnabled = true;
+            comboBoxObjectType.Items.AddRange(new object[] { "TABLE", "VIEW", "FUNCTION", "PROCEDURE" });
+            comboBoxObjectType.Location = new Point(88, 0);
+            comboBoxObjectType.Name = "comboBoxObjectType";
+            comboBoxObjectType.Size = new Size(219, 23);
+            comboBoxObjectType.TabIndex = 0;
+            comboBoxObjectType.SelectedIndexChanged += comboBoxObjectType_SelectedIndexChanged;
+            // 
+            // labelObjectType
+            // 
+            labelObjectType.AutoSize = true;
+            labelObjectType.Location = new Point(0, 0);
+            labelObjectType.Name = "labelObjectType";
+            labelObjectType.Size = new Size(72, 15);
+            labelObjectType.TabIndex = 1;
+            labelObjectType.Text = "Object Type:";
+            // 
             // dataGridViewObjects
-            this.dataGridViewObjects.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewObjects.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewObjects.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewObjects.Location = new System.Drawing.Point(0, 0);
-            this.dataGridViewObjects.Name = "dataGridViewObjects";
-            this.dataGridViewObjects.RowTemplate.Height = 24;
-            this.dataGridViewObjects.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewObjects_CellClick);
-
+            // 
+            dataGridViewObjects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewObjects.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewObjects.Dock = DockStyle.Fill;
+            dataGridViewObjects.Location = new Point(0, 0);
+            dataGridViewObjects.Name = "dataGridViewObjects";
+            dataGridViewObjects.RowTemplate.Height = 24;
+            dataGridViewObjects.Size = new Size(967, 366);
+            dataGridViewObjects.TabIndex = 0;
+            dataGridViewObjects.CellClick += dataGridViewObjects_CellClick;
+            // 
             // dataGridViewPermissions
-            this.dataGridViewPermissions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewPermissions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewPermissions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewPermissions.Location = new System.Drawing.Point(0, 0);
-            this.dataGridViewPermissions.Name = "dataGridViewPermissions";
-            this.dataGridViewPermissions.RowTemplate.Height = 24;
-
+            // 
+            dataGridViewPermissions.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewPermissions.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewPermissions.Dock = DockStyle.Fill;
+            dataGridViewPermissions.Location = new Point(0, 0);
+            dataGridViewPermissions.Name = "dataGridViewPermissions";
+            dataGridViewPermissions.RowTemplate.Height = 24;
+            dataGridViewPermissions.Size = new Size(228, 366);
+            dataGridViewPermissions.TabIndex = 0;
+            dataGridViewPermissions.CellContentClick += dataGridViewPermissions_CellContentClick;
+            // 
+            // splitContainer
+            // 
+            splitContainer.Location = new Point(0, 23);
+            splitContainer.Name = "splitContainer";
+            // 
+            // splitContainer.Panel1
+            // 
+            splitContainer.Panel1.Controls.Add(dataGridViewObjects);
+            // 
+            // splitContainer.Panel2
+            // 
+            splitContainer.Panel2.Controls.Add(dataGridViewPermissions);
+            splitContainer.Size = new Size(1199, 366);
+            splitContainer.SplitterDistance = 967;
+            splitContainer.TabIndex = 2;
+            // 
             // ObjectForm
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1370, 450);
-            this.Controls.Add(this.comboBoxObjectType);
-            this.Controls.Add(this.labelObjectType);
-            this.Controls.Add(this.splitContainer);
-            this.Name = "ObjectForm";
-            this.Text = "Database Objects";
-
-            this.splitContainer.Panel1.ResumeLayout(false);
-            this.splitContainer.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewObjects)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPermissions)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
-            this.splitContainer.ResumeLayout(false);
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            // 
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(1267, 583);
+            Controls.Add(comboBoxObjectType);
+            Controls.Add(labelObjectType);
+            Controls.Add(splitContainer);
+            Name = "ObjectForm";
+            Text = "Database Objects";
+            ((System.ComponentModel.ISupportInitialize)dataGridViewObjects).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewPermissions).EndInit();
+            splitContainer.Panel1.ResumeLayout(false);
+            splitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer).EndInit();
+            splitContainer.ResumeLayout(false);
+            ResumeLayout(false);
+            PerformLayout();
         }
     }
 }
